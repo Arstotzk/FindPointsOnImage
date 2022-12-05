@@ -27,25 +27,64 @@ def culcSum(_x, _y, _img, _shab, _size):
             else:
                 summ += 1/((r - rs) ** 2)
     return summ
-def culcSumThread(_x, _y, _img, _shab, _size, i):
-    _xStart = (i * 2) - 2
+
+def culcSumThread(_x, _y, _img, _shab, _size, i, blocks):
+    arrSumm = None
+    for block in blocks:
+        if blocks[0] == block:
+            arrSumm = culcSumBlock(_x, _y, _img, _shab, _size, block)
+        else:
+            arrSummBlock = culcSumBlock(_x, _y, _img, _shab, _size, block)
+            arrSumm = np.vstack((arrSumm, arrSummBlock))
+    print("Поток " + str(i) + " завершен")
+    return arrSumm
+
+def culcSumBlock(_x, _y, _img, _shab, _size, block):
+    _xStart = (block * 2) - 2
     arrSumm = np.full((2, 32), 0)
     for x in range(_xStart, _xStart + 2):
         for y in range(0, 32):
             arrSumm[x - _xStart, y] = culcSum(_x + x, _y + y, _img, _shab, _size)
-    print("Поток " + str(i) + " завершен")
+    print("Расчет блока " + str(block) + " завершен")
     return arrSumm
 
-def start (xPointTh,yPointTh, imgFull,shabFull):
-    executor = ProcessPoolExecutor(16)
-    params = [
-        [xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh],
-        [yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh],
-        [imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull],
-        [shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull],
-        [64,64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64],
-        [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
-    ]
+#Получить блоки для расчета на поток
+def getBlocksByThreads(threadNum, threadNums, threadsCPU):
+    blocksNum = int(threadsCPU/threadNums)
+    blocks = []
+    for block in range(0, blocksNum):
+        blocks.append(int((threadNum * blocksNum) + block))
+    return blocks
+
+def start (xPointTh,yPointTh, imgFull,shabFull, threadNums, threadsCPU):
+    executor = ProcessPoolExecutor(threadNums)
+    params = [[],[],[],[],[],[],[]]
+    for threadNum in range(0, threadNums):
+        params[0].append(xPointTh)
+        params[1].append(yPointTh)
+        params[2].append(imgFull)
+        params[3].append(shabFull)
+        params[4].append(64)
+        params[5].append(threadNum)
+        params[6].append(getBlocksByThreads(threadNum, threadNums, threadsCPU))
+    #params = [
+    #    [xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh],
+    #    [yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh],
+    #    [imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull],
+    #    [shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull],
+    #    [64,64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64],
+    #    [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
+    #    [[0],[1],[2],[3],[4],[5],[6],[7],[8],[9],[10],[11],[12],[13],[14],[15]]
+    #]
+    #executor = ProcessPoolExecutor(8)
+    #params = [
+    #    [xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh],
+    #    [yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh],
+    #    [imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull],
+    #    [shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull],
+    #    [64, 64, 64, 64, 64, 64, 64, 64],
+    #    [0, 1, 2, 3, 4, 5, 6, 7]
+    #]
     result = list(executor.map(culcSumThread, *params))
     ##procs = []
     #    th = []

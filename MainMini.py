@@ -1,5 +1,6 @@
 import numpy as np
 from PIL import Image
+import time
 from numpy import save
 from numpy import load
 import threading
@@ -39,6 +40,7 @@ def resizeImg(_img):
     _img = _img.resize((new_width, new_height), Image.ANTIALIAS)
     return _img
 
+startTime = int(round(time.time()*1000))
 imgShow = Image.open("img/1prepare.jpg")
 imgFull = Image.open("img/1prepare.jpg")
 imgFull = imgFull.convert('L')
@@ -117,4 +119,7 @@ for x in range (xPointFull-16, xPointFull+16):
         imgSumFull.putpixel((x, y),(collor))
 imgSumFull.show()
 imgShow.putpixel((xPoint,yPoint),(0, 255, 0))
-imgShow.show()
+endTime = int(round(time.time()*1000))
+difTime = endTime - startTime
+print("Executing time: " +str(difTime))
+#imgShow.show()

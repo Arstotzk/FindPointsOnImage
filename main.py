@@ -1,6 +1,7 @@
 import numpy as np
 from PIL import Image
 from numpy import save
+import time
 from numpy import load
 np.set_printoptions(threshold=np.inf)
 
@@ -21,7 +22,7 @@ def culcSum(_x, _y, _img, _shab):
                 summ += 1/((r - rs) ** 2)
     return summ
 
-
+startTime = int(round(time.time()*1000))
 img = Image.open("img/1.jpg")
 img = img.convert('L')
 imgSum = Image.open("img/1.jpg")
@@ -54,6 +55,9 @@ for x in range (64, width-64):
     for y in range (64, height-64):
         imgSum.putpixel((x, y)(arrSumm[x, y], arrSumm[x, y], arrSumm[x, y]))
 print(xPoint, yPoint)
-imgSum.show()
+#imgSum.show()
 img.putpixel((xPoint,yPoint)(0, 255, 0))
-img.show()
+#img.show()
+endTime = int(round(time.time() * 1000))
+difTime = endTime - startTime
+print("Executing time: " + str(difTime))

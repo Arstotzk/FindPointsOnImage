@@ -34,7 +34,7 @@
       <recent name="C:\Users\idens\PycharmProjects\findPointsOnImage" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.MainMini (1)">
+  <component name="RunManager" selected="Python.MainMiniThread">
     <configuration name="MainMini (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="findPointsOnImage" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -163,10 +163,10 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.MainMini (1)" />
         <item itemvalue="Python.MainMiniThread" />
-        <item itemvalue="Python.openArrMini" />
+        <item itemvalue="Python.MainMini (1)" />
         <item itemvalue="Python.MainMini" />
+        <item itemvalue="Python.openArrMini" />
         <item itemvalue="Python.openArr" />
       </list>
     </recent_temporary>
@@ -193,16 +193,5 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/MainMiniThread.py</url>
-          <line>110</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

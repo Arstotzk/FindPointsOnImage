@@ -2,6 +2,7 @@ import concurrent
 
 import numpy as np
 from PIL import Image
+import time
 from numpy import save
 from numpy import load
 import threading
@@ -39,15 +40,18 @@ def culcSumThread(_x, _y, _img, _shab, _size, i):
     print("Поток " + str(i) + " завершен")
     #return arrSumm
 
-def resizeImg(_img):
+def resizeImg(_img, multiple):
     width, height = _img.size
-    new_width = int(width/8)
-    new_height = int(height/8)
+    new_width = int(width/multiple)
+    new_height = int(height/multiple)
     #print(new_width, new_height)
     _img = _img.resize((new_width, new_height), Image.ANTIALIAS)
     return _img
 
-
+threadsCPU = 16
+threadNums = 1
+multipleResize = 8
+startTime = int(round(time.time()*1000))
 imgShow = Image.open("img/1prepare.jpg")
 imgFull = Image.open("img/1prepare.jpg")
 imgFull = imgFull.convert('L')
@@ -60,41 +64,45 @@ arrSummFull = np.full((width, height), 0)
 
 img = Image.open("img/1prepare.jpg")
 img = img.convert('L')
-img = resizeImg(img)
+img = resizeImg(img, multipleResize)
 imgSum = Image.open("img/1prepare.jpg")
 imgSum = imgSum.convert('L')
-imgSum = resizeImg(imgSum)
+imgSum = resizeImg(imgSum, multipleResize)
 shab = Image.open("img/1S.png")
 shab = shab.convert('L')
-shab = resizeImg(shab)
+shab = resizeImg(shab, multipleResize)
 width, height = img.size
+widthShab, heightShab = shab.size
+halfSizeShab = int(widthShab/2)
 arrSumm = np.full((width, height), 0)
 #save('arrZero.npy', arrSumm)
 summOld = 0
-for x in range (8, width-8):
-    for y in range (8, height-8):
-        summ = culcSum(x, y, img, shab, 8)
+for x in range (halfSizeShab, width-(halfSizeShab)):
+    for y in range (halfSizeShab, height-(halfSizeShab)):
+        summ = culcSum(x, y, img, shab, halfSizeShab)
         arrSumm[x, y] = summ
         if (summ > summOld):
             summOld = summ
             xPoint = x
             yPoint = y
     if __name__ == '__main__':
-        print("Ready resize: " + str(((x - 7)/(width-16)) * 100) + "%")
+        print("Ready resize: " + str(((x - halfSizeShab + 1)/(width - widthShab)) * 100) + "%")
 #save('arrSummMini.npy', arrSumm)
-maxArrSum = 0
-for x in range (8, width-8):
-    for y in range (8, height-8):
-        nextArrSum = arrSumm[x, y]
-        if (nextArrSum > maxArrSum):
-            maxArrSum = nextArrSum
-for x in range (8, width-8):
-    for y in range (8, height-8):
-        arrSumm[x, y] = int(((arrSumm[x, y])/maxArrSum) * 255)
-for x in range (8, width-8):
-    for y in range (8, height-8):
-        collor = int(arrSumm[x, y].item())
-        imgSum.putpixel((x, y),(collor))
+
+#maxArrSum = 0
+#for x in range (halfSizeShab, width-halfSizeShab):
+#    for y in range (halfSizeShab, height-halfSizeShab):
+#        nextArrSum = arrSumm[x, y]
+#        if (nextArrSum > maxArrSum):
+#            maxArrSum = nextArrSum
+#for x in range (halfSizeShab, width-halfSizeShab):
+#    for y in range (halfSizeShab, height-halfSizeShab):
+#        arrSumm[x, y] = int(((arrSumm[x, y])/maxArrSum) * 255)
+#for x in range (halfSizeShab, width-halfSizeShab):
+#    for y in range (halfSizeShab, height-halfSizeShab):
+#        collor = int(arrSumm[x, y].item())
+#        imgSum.putpixel((x, y),(collor))
+
 if __name__ == '__main__':
     print(xPoint, yPoint)
 #imgSum.show()
@@ -106,11 +114,12 @@ xPointTh = xPointFull-16
 yPointTh = yPointFull-16
 
 if __name__ == '__main__':
-    numsss = ThreadCulc.start(xPointTh, yPointTh, imgFull, shabFull)
+    numsss = ThreadCulc.start(xPointTh, yPointTh, imgFull, shabFull, threadNums, threadsCPU)
     print("Потоки завершены")
     #print(numsss)
+    #Закоментил на время эксперемента
     arrSummFull = numsss[0]
-    for i in range(1, 16):
+    for i in range(1,threadNums):
         arrSummFull = np.vstack((arrSummFull, numsss[i]))
     #arrSummFull = np.vstack((numsss[0], numsss[1], numsss[2], numsss[3], numsss[4], numsss[5], numsss[6], numsss[7], numsss[8], numsss[9], numsss[10], numsss[11], numsss[12], numsss[13], numsss[14], numsss[15]))
     #print(arrSummFull)
@@ -123,9 +132,9 @@ if __name__ == '__main__':
     #            xPoint = x
     #            yPoint = y
     #    print("Ready: " + str(((x - xPointFull + 16)/(32)) * 100) + "%")
-    #maxArrSum = 0
+    maxArrSum = 0
 
-    width, height = imgShow.size
+    #Закоментил на время эксперемента
     for x in range (xPointFull-16, xPointFull+16):
         for y in range (yPointFull-16, yPointFull+16):
             nextArrSum = arrSummFull[x - xPointFull + 16, y - yPointFull + 16]
@@ -138,6 +147,10 @@ if __name__ == '__main__':
         for y in range (yPointFull-16, yPointFull+16):
             collor = int(arrSummFull[x - xPointFull + 16, y - yPointFull + 16].item())
             imgSumFull.putpixel((x, y),(collor))
+
+    endTime = int(round(time.time() * 1000))
+    difTime = endTime - startTime
+    print("Executing time: " + str(difTime))
     imgSumFull.show()
-    imgShow.putpixel((xPoint,yPoint),(0, 255, 0))
-    imgShow.show()
+    #imgShow.putpixel((xPoint,yPoint),(0, 255, 0))
+    #imgShow.show()
