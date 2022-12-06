@@ -2,7 +2,7 @@ import numpy as np
 from PIL import Image
 import time
 import ThreadCulc
-import configRead
+import Point
 np.set_printoptions(threshold=np.inf)
 
 class ImageOperations:
@@ -15,13 +15,9 @@ class ImageOperations:
         self.image = _image
         self.resizedImage = self.resizeImg(self.image, self.setting.multipleResize)
         self.imageFirstPoint = None
-        self.firstPointX = None
-        self.firstPointY = None
-        self.firstPointTemplate = Image.open("img/1S.png").convert('L')
-        self.firstPointTemplateWidth, self.firstPointTemplateHeight = self.firstPointTemplate.size
+        self.firstPoint = Point.Point("First point", Image.open("img/1S.png").convert('L'))
         self.width, self.height = self.image.size
         self.arrSummFull = np.full((self.width, self.height), 0)
-        self.coeficient = 2
 
     def executionTime(self):
         return self.endTime - self.startTime
@@ -54,12 +50,17 @@ class ImageOperations:
         self.startTime = int(round(time.time() * 1000))
         imgFull = self.image
         imgFull = imgFull.convert('L')
-        shabFull = self.firstPointTemplate
+        shabFull = self.firstPoint.template
         shabFull = shabFull.convert('L')
 
+        self.findPoint(imgFull, shabFull, self.firstPoint)
+
+        self.endTime = int(round(time.time() * 1000))
+
+    def findPoint(self, _imgFull, _shabFull, _point):
         resizedImg = self.resizedImage
         resizedImg = resizedImg.convert('L')
-        shab = self.firstPointTemplate
+        shab = _shabFull
         shab = shab.convert('L')
         shab = self.resizeImg(shab, self.setting.multipleResize)
         width, height = resizedImg.size
@@ -76,7 +77,7 @@ class ImageOperations:
                     summOld = summ
                     xPoint = x
                     yPoint = y
-            #print("Ready resize: " + str(((x - halfSizeShab + 1) / (width - widthShab)) * 100) + "%")
+            # print("Ready resize: " + str(((x - halfSizeShab + 1) / (width - widthShab)) * 100) + "%")
 
         print(xPoint, yPoint)
 
@@ -87,7 +88,8 @@ class ImageOperations:
         xPointTh = xPointFull - 16
         yPointTh = yPointFull - 16
 
-        numsss = ThreadCulc.start(xPointTh, yPointTh, imgFull, shabFull, self.setting.threadNums, self.setting.threadsCPU)
+        numsss = ThreadCulc.start(xPointTh, yPointTh, _imgFull, _shabFull, self.setting.threadNums,
+                                  self.setting.threadsCPU)
         print("Потоки завершены")
 
         arrSummFull = numsss[0]
@@ -100,21 +102,9 @@ class ImageOperations:
                 nextArrSum = arrSummFull[x - xPointFull + 16, y - yPointFull + 16]
                 if (nextArrSum > maxArrSum):
                     maxArrSum = nextArrSum
-                    self.firstPointX = x
-                    self.firstPointY = y
-
-        #Градиент на изображении вероятности совпадения шаблона
-        #for x in range(xPointFull - 16, xPointFull + 16):
-        #    for y in range(yPointFull - 16, yPointFull + 16):
-        #        arrSummFull[x - xPointFull + 16, y - yPointFull + 16] = int(
-        #            ((arrSummFull[x - xPointFull + 16, y - yPointFull + 16]) / maxArrSum) * 255)
-        #for x in range(xPointFull - 16, xPointFull + 16):
-        #    for y in range(yPointFull - 16, yPointFull + 16):
-        #        collor = int(arrSummFull[x - xPointFull + 16, y - yPointFull + 16].item())
-        #        imgSumFull.putpixel((x, y), (collor))
-
-        self.endTime = int(round(time.time() * 1000))
+                    self.firstPoint.X = x
+                    self.firstPoint.Y = y
 
     def getPointOnImage(self):
         self.imageFirstPoint = self.image
-        self.imageFirstPoint.putpixel((self.firstPointX, self.firstPointY), (0, 255, 0))
+        self.imageFirstPoint.putpixel((self.firstPoint.X, self.firstPoint.Y), (0, 255, 0))
