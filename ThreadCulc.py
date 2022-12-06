@@ -1,15 +1,5 @@
-import concurrent
-
 import numpy as np
-from PIL import Image
-from numpy import save
-from numpy import load
-import threading
-from threading import Thread
-import os
-from multiprocessing import Process
 from concurrent.futures import ProcessPoolExecutor
-from concurrent.futures import ThreadPoolExecutor, wait, as_completed
 
 def culcSum(_x, _y, _img, _shab, _size):
     summ = 0
@@ -67,41 +57,6 @@ def start (xPointTh,yPointTh, imgFull,shabFull, threadNums, threadsCPU):
         params[4].append(64)
         params[5].append(threadNum)
         params[6].append(getBlocksByThreads(threadNum, threadNums, threadsCPU))
-    #params = [
-    #    [xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh],
-    #    [yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh],
-    #    [imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull],
-    #    [shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull],
-    #    [64,64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64],
-    #    [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
-    #    [[0],[1],[2],[3],[4],[5],[6],[7],[8],[9],[10],[11],[12],[13],[14],[15]]
-    #]
-    #executor = ProcessPoolExecutor(8)
-    #params = [
-    #    [xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh, xPointTh],
-    #    [yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh, yPointTh],
-    #    [imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull, imgFull],
-    #    [shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull, shabFull],
-    #    [64, 64, 64, 64, 64, 64, 64, 64],
-    #    [0, 1, 2, 3, 4, 5, 6, 7]
-    #]
+
     result = list(executor.map(culcSumThread, *params))
-    ##procs = []
-    #    th = []
-    #    pool = ProcessPoolExecutor(16)
-    #    with concurrent.futures.ProcessPoolExecutor() as executor:
-
-    #        for i in range(16):
-    #            th.append(executor.map(culcSumThread, (xPointTh, yPointTh, imgFull, shabFull, 64, i, )))
-
-    #    for x in as_completed(th):
-    #        print(x.result())
-    #for i in range(16):
-    #    th = Process(target=culcSumThread, args=(xPointTh, yPointTh, imgFull, shabFull, 64, i, ))
-    #    procs.append(th)
-    #    th.start()
-
-    #for proc in procs:
-    #    proc.join()
-    #print("Потоки завершены")
     return result

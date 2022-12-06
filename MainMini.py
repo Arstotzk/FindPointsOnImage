@@ -88,7 +88,7 @@ for x in range (8, width-8):
         collor = int(arrSumm[x, y].item())
         imgSum.putpixel((x, y),(collor))
 print(xPoint, yPoint)
-#imgSum.show()
+imgSum.show()
 xPointFull = xPoint * 8
 yPointFull = yPoint * 8
 summOld = 0
