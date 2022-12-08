@@ -54,7 +54,7 @@ def start (xPointTh,yPointTh, imgFull,shabFull, threadNums, threadsCPU):
         params[1].append(yPointTh)
         params[2].append(imgFull)
         params[3].append(shabFull)
-        params[4].append(64)
+        params[4].append(int(shabFull.size[0]/2))
         params[5].append(threadNum)
         params[6].append(getBlocksByThreads(threadNum, threadNums, threadsCPU))
 

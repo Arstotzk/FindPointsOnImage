@@ -15,7 +15,7 @@ class ImageOperations:
         self.image = _image
         self.resizedImage = self.resizeImg(self.image, self.setting.multipleResize)
         self.imageFirstPoint = None
-        self.firstPoint = Point.Point("First point", Image.open("img/1S.png").convert('L'))
+        self.firstPoint = Point.Point("First point", Image.open("img/1SSmaller.png").convert('L'))
         self.width, self.height = self.image.size
         self.arrSummFull = np.full((self.width, self.height), 0)
 
