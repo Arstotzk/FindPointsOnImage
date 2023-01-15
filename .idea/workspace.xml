@@ -198,9 +198,9 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ThreadCulc.py</url>
-          <line>51</line>
-          <option name="timeStamp" value="4" />
+          <url>file://$PROJECT_DIR$/ImageOperations.py</url>
+          <line>154</line>
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

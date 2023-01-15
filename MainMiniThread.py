@@ -15,9 +15,11 @@ import configRead
 import ImageOperations
 
 if __name__ == '__main__':
-    image = Image.open("img/1prepare.jpg")
+    image = Image.open("img/1prepare2.jpg")
     imageOper = ImageOperations.ImageOperations(image, configRead.Settings())
     imageOper.findPointsByTemplate()
     print("Executing time: " + str(imageOper.executionTime()))
-    imageOper.getPointOnImage()
-    imageOper.imageFirstPoint.show()
+    imageOper.setPointsOnImege()
+    imageOper.image.show()
+    #imageOper.DT.setPointOnImage(imageOper.image)
+    #imageOper.DT.pointOnImage.show()

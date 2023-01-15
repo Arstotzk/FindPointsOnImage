@@ -8,6 +8,7 @@ class Point(object):
         self.name = _name
         self.template = _template
         self.templateWidth, self.templateHeight = self.template.size
+        self.pointOnImage = None
 
     def __init__(self, _name, _template):
         self.X = None
@@ -15,6 +16,11 @@ class Point(object):
         self.name = _name
         self.template = _template
         self.templateWidth, self.templateHeight = self.template.size
+        self.pointOnImage = None
+
+    def setPointOnImage(self, _image):
+        self.pointOnImage = _image
+        self.pointOnImage.putpixel((self.X, self.Y), (0, 255, 0))
 
     def move(self, dx, dy):
         self.X = self.X + dx
