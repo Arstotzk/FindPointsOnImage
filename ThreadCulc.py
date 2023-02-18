@@ -5,12 +5,14 @@ def culcSum(_x, _y, _img, _shab, _size):
     summ = 0
     xs = -1
     ys = -1
+    width, height = _img.size
     for x in range (_x - _size, _x + _size):
         xs += 1
         ys = -1
         for y in range (_y - _size, _y + _size):
             ys += 1
-            #TODO Если нет такой координаты, то брать 0 (чтобы не падало если уходит за пределы изображения)
+            if width < x or height < y:
+               continue
             r = _img.getpixel((x, y))
             rs = _shab.getpixel((xs, ys))
             if (r == rs):
