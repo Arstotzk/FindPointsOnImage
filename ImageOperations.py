@@ -135,17 +135,12 @@ class ImageOperations:
 
         xPointFull = xPoint * self.setting.multipleResize
         yPointFull = yPoint * self.setting.multipleResize
-        summOld = 0
         print(xPointFull, yPointFull)
 
-        #TODO доразбиратся с числом 16, почему при сдвиге на другое число - нахождение точки ломается. А ломатся не должно, так как сдвиг должен влиять только на область обработки
-        templateConst = 16
+        xPointTh = xPointFull - self.setting.processingSizeHalf
+        yPointTh = yPointFull - self.setting.processingSizeHalf
 
-        xPointTh = xPointFull - templateConst
-        yPointTh = yPointFull - templateConst
-
-        numsss = ThreadCulc.start(xPointTh, yPointTh, _imgFull, _shabFull, self.setting.threadNums,
-                                  self.setting.threadsCPU)
+        numsss = ThreadCulc.start(xPointTh, yPointTh, _imgFull, _shabFull, self.setting.threadNums, self.setting.processingSize)
         print("Потоки завершены")
 
         arrSummFull = numsss[0]
@@ -153,9 +148,9 @@ class ImageOperations:
             arrSummFull = np.vstack((arrSummFull, numsss[i]))
 
         maxArrSum = 0
-        for x in range(xPointFull - templateConst, xPointFull + templateConst):
-            for y in range(yPointFull - templateConst, yPointFull + templateConst):
-                nextArrSum = arrSummFull[x - xPointFull + templateConst, y - yPointFull + templateConst]
+        for x in range(xPointFull - self.setting.processingSizeHalf, xPointFull + self.setting.processingSizeHalf):
+            for y in range(yPointFull - self.setting.processingSizeHalf, yPointFull + self.setting.processingSizeHalf):
+                nextArrSum = arrSummFull[x - xPointFull + self.setting.processingSizeHalf, y - yPointFull + self.setting.processingSizeHalf]
                 if (nextArrSum > maxArrSum):
                     maxArrSum = nextArrSum
                     _point.X = x
