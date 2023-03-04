@@ -3,14 +3,23 @@ from concurrent.futures import ProcessPoolExecutor
 import math
 
 def culcSum(_x, _y, _img, _shab, _size):
+    """
+    Рачет суммы совпадения пикселя и области вокруг него с шаблоном.
+    :param _x: X координата пикселя.
+    :param _y: Y координата пикселя.
+    :param _img: Изображение.
+    :param _shab: Шаблон.
+    :param _size: Размер шаблона\2.
+    :return: Сумма сопадения пикселя с шаблоном.
+    """
     summ = 0
     xs = -1
     ys = -1
     width, height = _img.size
-    for x in range (_x - _size, _x + _size):
+    for x in range(_x - _size, _x + _size):
         xs += 1
         ys = -1
-        for y in range (_y - _size, _y + _size):
+        for y in range(_y - _size, _y + _size):
             ys += 1
             if width < x or height < y:
                continue
@@ -22,7 +31,19 @@ def culcSum(_x, _y, _img, _shab, _size):
                 summ += 1/((r - rs) ** 2)
     return summ
 
-def culcSumThread(_x, _y, _img, _shab, _size, i, blocks, processingSize):
+def culcSumThread(_x, _y, _img, _shab, _size, thread, blocks, processingSize):
+    """
+    Расчет совпадения шаблона через потоки.
+    :param _x: X координата начала области для обработки.
+    :param _y: Y координата начала области для обработки.
+    :param _img: Изображение.
+    :param _shab: Шаблон.
+    :param _size: Размер шаблона\2.
+    :param i: Номер потока.
+    :param blocks: Блоки для обработки.
+    :param processingSize: Область для обработки.
+    :return: Массив совпадений по найденным блокам в потоке.
+    """
     arrSumm = None
     for block in blocks:
         if blocks[0] == block:
@@ -30,10 +51,21 @@ def culcSumThread(_x, _y, _img, _shab, _size, i, blocks, processingSize):
         else:
             arrSummBlock = culcSumBlock(_x, _y, _img, _shab, _size, block, processingSize)
             arrSumm = np.vstack((arrSumm, arrSummBlock))
-    print("Поток " + str(i) + " завершен")
+    print("Поток " + str(thread) + " завершен")
     return arrSumm
 
 def culcSumBlock(_x, _y, _img, _shab, _size, block, processingSize):
+    """
+    Расчет суммы совпадения на область в блоке.
+    :param _x: X координата начала области для обработки.
+    :param _y: Y координата начала области для обработки.
+    :param _img: Изображение.
+    :param _shab: Шаблон.
+    :param _size: Размер шаблона\2.
+    :param block: Номер блока.
+    :param processingSize: Область обработки.
+    :return: Сумма совпадений по блоку.
+    """
     _xStart = (block * 2) - 2
     arrSumm = np.full((2, processingSize), 0)
     for x in range(_xStart, _xStart + 2):
@@ -42,8 +74,17 @@ def culcSumBlock(_x, _y, _img, _shab, _size, block, processingSize):
     print("Расчет блока " + str(block) + " завершен")
     return arrSumm
 
-#Получить блоки для расчета на поток
 def getBlocksByThreads(threadNum, threadNums, processingSize):
+    """
+    Получить блоки для расчета на поток.
+    Делит область на блоки по 2 пикселя шириной, затем по потоку назначает блоки в цикле.
+    Соответствие потока и блока вычисляется: номер блока = (номер потока + всего потоков * x),
+    где x - номер итерации по прохождению массива блоков.
+    :param threadNum: Номер потока.
+    :param threadNums: Всего потоков.
+    :param processingSize: Размер области обработки.
+    :return: Массив блоков соответствующий номеру потока.
+    """
     blocksNum = int(processingSize/2)
     blocks = []
     maxBlockNum = math.ceil(processingSize/threadNums)
@@ -54,6 +95,16 @@ def getBlocksByThreads(threadNum, threadNums, processingSize):
     return blocks
 
 def start (xPointTh,yPointTh, imgFull,shabFull, threadNums, processingSize):
+    """
+    Старт расчета через многопоточный процесс.
+    :param xPointTh: X координата начала области для обработки.
+    :param yPointTh: Y координата начала области для обработки.
+    :param imgFull: Изображение.
+    :param shabFull: Шаблон.
+    :param threadNums: Кол-во потоков.
+    :param processingSize: Размер области обработки.
+    :return: Массив с вероятностным нахождением точки по пикселям области.
+    """
     executor = ProcessPoolExecutor(threadNums)
     params = [[],[],[],[],[],[],[],[]]
     for threadNum in range(0, threadNums):

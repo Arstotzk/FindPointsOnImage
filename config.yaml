@@ -1,3 +1,4 @@
-threadsCPU: 16
-threadNums: 8
-multipleResize: 8
+threadsCPU: 16 #кол-во потоков на ЦП
+threadNums: 8 #кол-во задейсвованных потоков в обработке
+multipleResize: 6 #коэффициент сжатия размера изображения
+processingSize: 32 #ширина\длинна шаблона

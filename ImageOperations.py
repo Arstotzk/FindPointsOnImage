@@ -8,6 +8,11 @@ np.set_printoptions(threshold=np.inf)
 class ImageOperations:
 
     def __init__(self, _image, _setting):
+        """
+        Инициализация класса в котором выполняется обработка изображения.
+        :param _image: Изображение.
+        :param _setting: Настройки из конфига.
+        """
         self.setting = _setting
         self.startTime = None
         self.endTime = None
@@ -37,9 +42,16 @@ class ImageOperations:
         self.Pr = Point.Point("Pr", Image.open("img/Pr.png").convert('L'))
 
     def executionTime(self):
+        """
+        Возвращает время затраченое на обработку изображения.
+        :return: Время в мс.
+        """
         return self.endTime - self.startTime
 
     def setPointsOnImege(self):
+        """
+        Ставит на изображение найденные точки.
+        """
         self.A.setPointOnImage(self.image)
         self.A1.setPointOnImage(self.image)
         self.ANS.setPointOnImage(self.image)
@@ -60,56 +72,54 @@ class ImageOperations:
         self.Pr.setPointOnImage(self.image)
 
     def resizeImg(self, _img, multiple):
+        """
+        Уменьшение изображение.
+        :param _img: Исходное изображение.
+        :param multiple: Коэффициент уменьшения.
+        :return:
+        """
         width, height = _img.size
         new_width = int(width / multiple)
         new_height = int(height / multiple)
         _img = _img.resize((new_width, new_height), Image.ANTIALIAS)
         return _img
 
-    def culcSum(self, _x, _y, _img, _shab, _size):
-        summ = 0
-        xs = -1
-        ys = -1
-        for x in range(_x - _size, _x + _size):
-            xs += 1
-            ys = -1
-            for y in range(_y - _size, _y + _size):
-                ys += 1
-                r = _img.getpixel((x, y))
-                rs = _shab.getpixel((xs, ys))
-                if (r == rs):
-                    summ += 1
-                else:
-                    summ += 1 / ((r - rs) ** 2)
-        return summ
-
     def findPointsByTemplate(self):
+        """
+        Найти точки по шаблону.
+        """
         self.startTime = int(round(time.time() * 1000))
         imgFull = self.image
         imgFull = imgFull.convert('L')
 
-        self.findPoint(imgFull, self.A.template, self.A)
-        self.findPoint(imgFull, self.A1.template, self.A1)
-        self.findPoint(imgFull, self.ANS.template, self.ANS)
-        self.findPoint(imgFull, self.AR.template, self.AR)
-        self.findPoint(imgFull, self.B.template, self.B)
-        self.findPoint(imgFull, self.B1.template, self.B1)
-        self.findPoint(imgFull, self.BR.template, self.BR)
-        self.findPoint(imgFull, self.DT.template, self.DT)
-        self.findPoint(imgFull, self.En.template, self.En)
-        self.findPoint(imgFull, self.Go.template, self.Go)
-        self.findPoint(imgFull, self.Me.template, self.Me)
-        self.findPoint(imgFull, self.Mn.template, self.Mn)
-        self.findPoint(imgFull, self.N.template, self.N)
-        self.findPoint(imgFull, self.O.template, self.O)
-        self.findPoint(imgFull, self.PAC.template, self.PAC)
-        self.findPoint(imgFull, self.Pg.template, self.Pg)
-        self.findPoint(imgFull, self.PNS.template, self.PNS)
-        self.findPoint(imgFull, self.Pr.template, self.Pr)
+        self.findPointByTemplate(imgFull, self.A.template, self.A)
+        self.findPointByTemplate(imgFull, self.A1.template, self.A1)
+        self.findPointByTemplate(imgFull, self.ANS.template, self.ANS)
+        self.findPointByTemplate(imgFull, self.AR.template, self.AR)
+        self.findPointByTemplate(imgFull, self.B.template, self.B)
+        self.findPointByTemplate(imgFull, self.B1.template, self.B1)
+        self.findPointByTemplate(imgFull, self.BR.template, self.BR)
+        self.findPointByTemplate(imgFull, self.DT.template, self.DT)
+        self.findPointByTemplate(imgFull, self.En.template, self.En)
+        self.findPointByTemplate(imgFull, self.Go.template, self.Go)
+        self.findPointByTemplate(imgFull, self.Me.template, self.Me)
+        self.findPointByTemplate(imgFull, self.Mn.template, self.Mn)
+        self.findPointByTemplate(imgFull, self.N.template, self.N)
+        self.findPointByTemplate(imgFull, self.O.template, self.O)
+        self.findPointByTemplate(imgFull, self.PAC.template, self.PAC)
+        self.findPointByTemplate(imgFull, self.Pg.template, self.Pg)
+        self.findPointByTemplate(imgFull, self.PNS.template, self.PNS)
+        self.findPointByTemplate(imgFull, self.Pr.template, self.Pr)
 
         self.endTime = int(round(time.time() * 1000))
 
-    def findPoint(self, _imgFull, _shabFull, _point):
+    def findPointByTemplate(self, _imgFull, _shabFull, _point):
+        """
+        Нахождение точки по шаблону.
+        :param _imgFull: Изображение.
+        :param _shabFull: Шаблон.
+        :param _point: Точка.
+        """
         resizedImg = self.resizedImage
         resizedImg = resizedImg.convert('L')
         shab = _shabFull
@@ -123,7 +133,7 @@ class ImageOperations:
         summOld = 0
         for x in range(halfSizeShab, width - (halfSizeShab)):
             for y in range(halfSizeShab, height - (halfSizeShab)):
-                summ = self.culcSum(x, y, resizedImg, shab, halfSizeShab)
+                summ = ThreadCulc.culcSum(x, y, resizedImg, shab, halfSizeShab)
                 arrSumm[x, y] = summ
                 if (summ > summOld):
                     summOld = summ
