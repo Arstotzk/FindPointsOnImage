@@ -150,12 +150,8 @@ class ImageOperations:
         xPointTh = xPointFull - self.setting.processingSizeHalf
         yPointTh = yPointFull - self.setting.processingSizeHalf
 
-        numsss = ThreadCulc.start(xPointTh, yPointTh, _imgFull, _shabFull, self.setting.threadNums, self.setting.processingSize)
+        arrSummFull = ThreadCulc.start(xPointTh, yPointTh, _imgFull, _shabFull, self.setting.threadNums, self.setting.processingSize)
         print("Потоки завершены")
-
-        arrSummFull = numsss[0]
-        for i in range(1, self.setting.threadNums):
-            arrSummFull = np.vstack((arrSummFull, numsss[i]))
 
         maxArrSum = 0
         for x in range(xPointFull - self.setting.processingSizeHalf, xPointFull + self.setting.processingSizeHalf):
@@ -166,11 +162,13 @@ class ImageOperations:
                     _point.X = x
                     _point.Y = y
 
+        #self.showFindedGradient(arrSummFull, xPointFull, yPointFull, _imgFull)
 
+    def showFindedGradient(self, arrSummFull, xPointFull, yPointFull, _imgFull):
         #Отображение градиента нахождения точки
-        #maxInt = arrSummFull.max()
-        #for x in range(xPointFull - templateConst, xPointFull + templateConst):
-        #    for y in range(yPointFull - templateConst, yPointFull + templateConst):
-        #        collor = int(((arrSummFull[x - xPointFull + templateConst, y - yPointFull + templateConst])/maxInt) * 255)
-        #        _imgFull.putpixel((x, y),(collor))
-        #_imgFull.show()
+        maxInt = arrSummFull.max()
+        for x in range(xPointFull - self.setting.processingSizeHalf, xPointFull + self.setting.processingSizeHalf):
+            for y in range(yPointFull - self.setting.processingSizeHalf, yPointFull + self.setting.processingSizeHalf):
+                collor = int(((arrSummFull[x - xPointFull + self.setting.processingSizeHalf, y - yPointFull + self.setting.processingSizeHalf])/maxInt) * 255)
+                _imgFull.putpixel((x, y),(collor))
+        _imgFull.show()

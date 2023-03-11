@@ -2,6 +2,12 @@ import numpy as np
 from concurrent.futures import ProcessPoolExecutor
 import math
 
+class ArrSumm:
+
+    def __init__(self):
+        self.arrays = []
+        self.blocks = []
+
 def culcSum(_x, _y, _img, _shab, _size):
     """
     Рачет суммы совпадения пикселя и области вокруг него с шаблоном.
@@ -44,13 +50,11 @@ def culcSumThread(_x, _y, _img, _shab, _size, thread, blocks, processingSize):
     :param processingSize: Область для обработки.
     :return: Массив совпадений по найденным блокам в потоке.
     """
-    arrSumm = None
+    arrSumm = ArrSumm()
     for block in blocks:
-        if blocks[0] == block:
-            arrSumm = culcSumBlock(_x, _y, _img, _shab, _size, block, processingSize)
-        else:
-            arrSummBlock = culcSumBlock(_x, _y, _img, _shab, _size, block, processingSize)
-            arrSumm = np.vstack((arrSumm, arrSummBlock))
+        arrSumm.arrays.append(culcSumBlock(_x, _y, _img, _shab, _size, block, processingSize))
+        arrSumm.blocks.append(block)
+
     print("Поток " + str(thread) + " завершен")
     return arrSumm
 
@@ -118,4 +122,23 @@ def start (xPointTh,yPointTh, imgFull,shabFull, threadNums, processingSize):
         params[7].append(processingSize)
 
     result = list(executor.map(culcSumThread, *params))
-    return result
+
+    #Собираем массивы блоков в один двумерный массив
+    blockCounter = 0
+    blockEnd = int(processingSize/2)
+    resultArray = None
+    while blockCounter < blockEnd:
+        for arrSumm in result:
+            counter = 0
+            for blockNum in arrSumm.blocks:
+                if blockNum == blockCounter and blockNum == 0:
+                    resultArray = arrSumm.arrays[counter][0]
+                    resultArray = np.vstack((resultArray, arrSumm.arrays[counter][1]))
+                    blockCounter = blockCounter + 1
+                elif blockNum == blockCounter:
+                    resultArray = np.vstack((resultArray, arrSumm.arrays[counter][0]))
+                    resultArray = np.vstack((resultArray, arrSumm.arrays[counter][1]))
+                    blockCounter = blockCounter + 1
+                counter = counter + 1
+
+    return resultArray
