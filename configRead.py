@@ -13,6 +13,11 @@ class Settings:
         self.processingSize = config["processingSize"]
         self.processingSizeHalf = int(config["processingSize"]/2)
 
+        self.colorR = config["colorR"]
+        self.colorG = config["colorG"]
+        self.colorB = config["colorB"]
+        self.shift = config["shift"]
+
     def readYaml(self, filePath):
         """
         Получить параметры из config.yaml.

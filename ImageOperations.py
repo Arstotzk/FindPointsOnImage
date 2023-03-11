@@ -166,6 +166,7 @@ class ImageOperations:
                     _point.X = x
                     _point.Y = y
 
+
         #Отображение градиента нахождения точки
         #maxInt = arrSummFull.max()
         #for x in range(xPointFull - templateConst, xPointFull + templateConst):

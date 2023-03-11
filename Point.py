@@ -1,4 +1,6 @@
 import math
+from PIL import ImageDraw
+import configRead
 
 class Point(object):
 
@@ -35,8 +37,11 @@ class Point(object):
         Поставить точку на изображение.
         :param _image: Изображение.
         """
+        settings = configRead.Settings()
         self.pointOnImage = _image
-        self.pointOnImage.putpixel((self.X, self.Y), (0, 255, 0))
+        self.pointOnImage.putpixel((self.X, self.Y), (settings.colorR, settings.colorG, settings.colorB))
+        imgDraw = ImageDraw.Draw(self.pointOnImage)
+        imgDraw.text((self.X + settings.shift, self.Y + settings.shift), self.name, (settings.colorR, settings.colorG, settings.colorB))
 
     def move(self, dx, dy):
         """
