@@ -4,21 +4,6 @@ import configRead
 
 class Point(object):
 
-    def __init__(self, _x, _y, _name, _template):
-        """
-        Инициализации точки.
-        :param _x: Координата x.
-        :param _y: Координата y.
-        :param _name: Имя.
-        :param _template: Шаблон.
-        """
-        self.X = _x
-        self.Y = _y
-        self.name = _name
-        self.template = _template
-        self.templateWidth, self.templateHeight = self.template.size
-        self.pointOnImage = None
-
     def __init__(self, _name, _template):
         """
         Инициализация точки.

@@ -89,7 +89,7 @@ class ImageOperations:
         Найти точки по шаблону.
         """
         self.startTime = int(round(time.time() * 1000))
-        imgFull = self.image
+        imgFull = self.image.copy()
         imgFull = imgFull.convert('L')
 
         self.findPointByTemplate(imgFull, self.A.template, self.A)
@@ -165,10 +165,20 @@ class ImageOperations:
         #self.showFindedGradient(arrSummFull, xPointFull, yPointFull, _imgFull)
 
     def showFindedGradient(self, arrSummFull, xPointFull, yPointFull, _imgFull):
+        """
+        Для отладки, показывает изображение с градиентом вероятности нахождения точки
+        :param arrSummFull: Массив с вероятностью нахождения точки
+        :param xPointFull: X координата области обработки
+        :param yPointFull: Y координата области обработки
+        :param _imgFull: Исходное изображение
+        """
         #Отображение градиента нахождения точки
         maxInt = arrSummFull.max()
         for x in range(xPointFull - self.setting.processingSizeHalf, xPointFull + self.setting.processingSizeHalf):
             for y in range(yPointFull - self.setting.processingSizeHalf, yPointFull + self.setting.processingSizeHalf):
-                collor = int(((arrSummFull[x - xPointFull + self.setting.processingSizeHalf, y - yPointFull + self.setting.processingSizeHalf])/maxInt) * 255)
-                _imgFull.putpixel((x, y),(collor))
+                color = int(((arrSummFull[x - xPointFull + self.setting.processingSizeHalf, y - yPointFull + self.setting.processingSizeHalf])/maxInt) * 255)
+                _imgFull.putpixel((x, y),(color))
         _imgFull.show()
+
+    def findCephalometricParameters(self):
+        return 1

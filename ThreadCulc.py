@@ -27,7 +27,7 @@ def culcSum(_x, _y, _img, _shab, _size):
         ys = -1
         for y in range(_y - _size, _y + _size):
             ys += 1
-            if width < x or height < y:
+            if width <= x or height <= y:
                continue
             r = _img.getpixel((x, y))
             rs = _shab.getpixel((xs, ys))
