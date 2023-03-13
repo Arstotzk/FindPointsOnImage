@@ -1,6 +1,7 @@
 import math
 from PIL import ImageDraw
-import configRead
+from config_read import Settings
+
 
 class Point(object):
 
@@ -17,16 +18,17 @@ class Point(object):
         self.templateWidth, self.templateHeight = self.template.size
         self.pointOnImage = None
 
-    def setPointOnImage(self, _image):
+    def set_point_on_image(self, _image):
         """
         Поставить точку на изображение.
         :param _image: Изображение.
         """
-        settings = configRead.Settings()
+        settings = Settings()
         self.pointOnImage = _image
         self.pointOnImage.putpixel((self.X, self.Y), (settings.colorR, settings.colorG, settings.colorB))
-        imgDraw = ImageDraw.Draw(self.pointOnImage)
-        imgDraw.text((self.X + settings.shift, self.Y + settings.shift), self.name, (settings.colorR, settings.colorG, settings.colorB))
+        img_draw = ImageDraw.Draw(self.pointOnImage)
+        img_draw.text((self.X + settings.shift, self.Y + settings.shift), self.name,
+                      (settings.colorR, settings.colorG, settings.colorB))
 
     def move(self, dx, dy):
         """
@@ -42,23 +44,23 @@ class Point(object):
         Вывод координатов точки.
         :return: Строка с координатами.
         """
-        return "Point(%s,%s)"%(self.X, self.Y)
+        return "Point(%s,%s)" % (self.X, self.Y)
 
-    def getX(self):
+    def get_x(self):
         """
         Получить координату x.
         :return: Координата x.
         """
         return self.X
 
-    def getY(self):
+    def get_y(self):
         """
         Получить координату y.
         :return: Координата y.
         """
         return self.Y
 
-    def setXY(self, _x, _y):
+    def set_xy(self, _x, _y):
         """
         Установить координаты x,y.
         :param _x: Координата x.
