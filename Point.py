@@ -1,5 +1,6 @@
 import math
 from PIL import ImageDraw
+from PIL import Image
 from config_read import Settings
 
 
@@ -78,3 +79,30 @@ class Point(object):
         dx = self.X - other.X
         dy = self.Y - other.Y
         return math.hypot(dx, dy)
+
+
+class Points(object):
+
+    def __init__(self):
+        self.A = Point("A", Image.open("img/A.png").convert('L'))
+        self.A1 = Point("A1", Image.open("img/A1.png").convert('L'))
+        self.ANS = Point("ANS", Image.open("img/ANS.png").convert('L'))
+        self.AR = Point("AR", Image.open("img/AR.png").convert('L'))
+        self.B = Point("B", Image.open("img/B.png").convert('L'))
+        self.B1 = Point("B1", Image.open("img/B1.png").convert('L'))
+        self.BR = Point("BR", Image.open("img/BR.png").convert('L'))
+        self.DT = Point("DT", Image.open("img/DT.png").convert('L'))
+        self.En = Point("En", Image.open("img/En.png").convert('L'))
+        self.Go = Point("Go", Image.open("img/Go.png").convert('L'))
+        self.Me = Point("Me", Image.open("img/Me.png").convert('L'))
+        self.Mn = Point("Mn", Image.open("img/Mn.png").convert('L'))
+        self.N = Point("N", Image.open("img/N.png").convert('L'))
+        self.Or = Point("Or", Image.open("img/Or.png").convert('L'))
+        self.PAC = Point("PAC", Image.open("img/PAC.png").convert('L'))
+        self.Pg = Point("Pg", Image.open("img/Pg.png").convert('L'))
+        self.PNS = Point("PNS", Image.open("img/PNS.png").convert('L'))
+        self.Po = Point("Po", Image.open("img/Po.png").convert('L'))
+        self.S = Point("S", Image.open("img/S.png").convert('L'))
+
+        self.all = [self.A, self.A1, self.ANS, self.AR, self.B, self.B1, self.BR, self.DT, self.En, self.Go, self.Me,
+                    self.Mn, self.N, self.Or, self.PAC, self.Pg, self.PNS, self.Po, self.S]

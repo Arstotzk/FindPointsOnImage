@@ -1,8 +1,10 @@
 import numpy as np
 from PIL import Image
 import time
-import thread_culc
-from point import Point
+import thread_calc
+from point import Points
+from vector import Lines
+from cephalometric_params import Params
 
 np.set_printoptions(threshold=np.inf)
 
@@ -24,24 +26,11 @@ class ImageOperations:
         self.width, self.height = self.image.size
         self.arrSumFull = np.full((self.width, self.height), 0)
         # Точки
-        self.A = Point("A", Image.open("img/A.png").convert('L'))
-        self.A1 = Point("A1", Image.open("img/A1.png").convert('L'))
-        self.ANS = Point("ANS", Image.open("img/ANS.png").convert('L'))
-        self.AR = Point("AR", Image.open("img/AR.png").convert('L'))
-        self.B = Point("B", Image.open("img/B.png").convert('L'))
-        self.B1 = Point("B1", Image.open("img/B1.png").convert('L'))
-        self.BR = Point("BR", Image.open("img/BR.png").convert('L'))
-        self.DT = Point("DT", Image.open("img/DT.png").convert('L'))
-        self.En = Point("En", Image.open("img/En.png").convert('L'))
-        self.Go = Point("Go", Image.open("img/Go.png").convert('L'))
-        self.Me = Point("Me", Image.open("img/Me.png").convert('L'))
-        self.Mn = Point("Mn", Image.open("img/Mn.png").convert('L'))
-        self.N = Point("N", Image.open("img/N.png").convert('L'))
-        self.O = Point("O", Image.open("img/O.png").convert('L'))
-        self.PAC = Point("PAC", Image.open("img/PAC.png").convert('L'))
-        self.Pg = Point("Pg", Image.open("img/Pg.png").convert('L'))
-        self.PNS = Point("PNS", Image.open("img/PNS.png").convert('L'))
-        self.Pr = Point("Pr", Image.open("img/Pr.png").convert('L'))
+        self.points = Points()
+        # Линии
+        self.lines = Lines()
+        # Параметры
+        self.params = Params()
 
     def execution_time(self):
         """
@@ -54,24 +43,25 @@ class ImageOperations:
         """
         Ставит на изображение найденные точки.
         """
-        self.A.set_point_on_image(self.image)
-        self.A1.set_point_on_image(self.image)
-        self.ANS.set_point_on_image(self.image)
-        self.AR.set_point_on_image(self.image)
-        self.B.set_point_on_image(self.image)
-        self.B1.set_point_on_image(self.image)
-        self.BR.set_point_on_image(self.image)
-        self.DT.set_point_on_image(self.image)
-        self.En.set_point_on_image(self.image)
-        self.Go.set_point_on_image(self.image)
-        self.Me.set_point_on_image(self.image)
-        self.Mn.set_point_on_image(self.image)
-        self.N.set_point_on_image(self.image)
-        self.O.set_point_on_image(self.image)
-        self.PAC.set_point_on_image(self.image)
-        self.Pg.set_point_on_image(self.image)
-        self.PNS.set_point_on_image(self.image)
-        self.Pr.set_point_on_image(self.image)
+        self.points.A.set_point_on_image(self.image)
+        self.points.A1.set_point_on_image(self.image)
+        self.points.ANS.set_point_on_image(self.image)
+        self.points.AR.set_point_on_image(self.image)
+        self.points.B.set_point_on_image(self.image)
+        self.points.B1.set_point_on_image(self.image)
+        self.points.BR.set_point_on_image(self.image)
+        self.points.DT.set_point_on_image(self.image)
+        self.points.En.set_point_on_image(self.image)
+        self.points.Go.set_point_on_image(self.image)
+        self.points.Me.set_point_on_image(self.image)
+        self.points.Mn.set_point_on_image(self.image)
+        self.points.N.set_point_on_image(self.image)
+        self.points.Or.set_point_on_image(self.image)
+        self.points.PAC.set_point_on_image(self.image)
+        self.points.Pg.set_point_on_image(self.image)
+        self.points.PNS.set_point_on_image(self.image)
+        self.points.Po.set_point_on_image(self.image)
+        self.points.S.set_point_on_image(self.image)
 
     def resize_img(self, _img, multiple):
         """
@@ -94,24 +84,25 @@ class ImageOperations:
         img_full = self.image.copy()
         img_full = img_full.convert('L')
 
-        self.find_point_by_template(img_full, self.A.template, self.A)
-        self.find_point_by_template(img_full, self.A1.template, self.A1)
-        self.find_point_by_template(img_full, self.ANS.template, self.ANS)
-        self.find_point_by_template(img_full, self.AR.template, self.AR)
-        self.find_point_by_template(img_full, self.B.template, self.B)
-        self.find_point_by_template(img_full, self.B1.template, self.B1)
-        self.find_point_by_template(img_full, self.BR.template, self.BR)
-        self.find_point_by_template(img_full, self.DT.template, self.DT)
-        self.find_point_by_template(img_full, self.En.template, self.En)
-        self.find_point_by_template(img_full, self.Go.template, self.Go)
-        self.find_point_by_template(img_full, self.Me.template, self.Me)
-        self.find_point_by_template(img_full, self.Mn.template, self.Mn)
-        self.find_point_by_template(img_full, self.N.template, self.N)
-        self.find_point_by_template(img_full, self.O.template, self.O)
-        self.find_point_by_template(img_full, self.PAC.template, self.PAC)
-        self.find_point_by_template(img_full, self.Pg.template, self.Pg)
-        self.find_point_by_template(img_full, self.PNS.template, self.PNS)
-        self.find_point_by_template(img_full, self.Pr.template, self.Pr)
+        self.find_point_by_template(img_full, self.points.A.template, self.points.A)
+        self.find_point_by_template(img_full, self.points.A1.template, self.points.A1)
+        self.find_point_by_template(img_full, self.points.ANS.template, self.points.ANS)
+        self.find_point_by_template(img_full, self.points.AR.template, self.points.AR)
+        self.find_point_by_template(img_full, self.points.B.template, self.points.B)
+        self.find_point_by_template(img_full, self.points.B1.template, self.points.B1)
+        self.find_point_by_template(img_full, self.points.BR.template, self.points.BR)
+        self.find_point_by_template(img_full, self.points.DT.template, self.points.DT)
+        self.find_point_by_template(img_full, self.points.En.template, self.points.En)
+        self.find_point_by_template(img_full, self.points.Go.template, self.points.Go)
+        self.find_point_by_template(img_full, self.points.Me.template, self.points.Me)
+        self.find_point_by_template(img_full, self.points.Mn.template, self.points.Mn)
+        self.find_point_by_template(img_full, self.points.N.template, self.points.N)
+        self.find_point_by_template(img_full, self.points.Or.template, self.points.Or)
+        self.find_point_by_template(img_full, self.points.PAC.template, self.points.PAC)
+        self.find_point_by_template(img_full, self.points.Pg.template, self.points.Pg)
+        self.find_point_by_template(img_full, self.points.PNS.template, self.points.PNS)
+        self.find_point_by_template(img_full, self.points.Po.template, self.points.Po)
+        self.find_point_by_template(img_full, self.points.S.template, self.points.S)
 
         self.endTime = int(round(time.time() * 1000))
 
@@ -135,7 +126,7 @@ class ImageOperations:
         sum_old = 0
         for x in range(half_size_template, width - (half_size_template)):
             for y in range(half_size_template, height - (half_size_template)):
-                sum = thread_culc.calc_sum(x, y, resized_img, template, half_size_template)
+                sum = thread_calc.calc_sum(x, y, resized_img, template, half_size_template)
                 array_sum[x, y] = sum
                 if (sum > sum_old):
                     sum_old = sum
@@ -152,13 +143,14 @@ class ImageOperations:
         x_point_th = x_point_full - self.setting.processingSizeHalf
         y_point_th = y_point_full - self.setting.processingSizeHalf
 
-        arr_sum_full = thread_culc.start(x_point_th, y_point_th, _img_full, _template_full, self.setting.threadNums,
+        arr_sum_full = thread_calc.start(x_point_th, y_point_th, _img_full, _template_full, self.setting.threadNums,
                                          self.setting.processingSize)
         print("Потоки завершены")
 
         max_array_sum = 0
         for x in range(x_point_full - self.setting.processingSizeHalf, x_point_full + self.setting.processingSizeHalf):
-            for y in range(y_point_full - self.setting.processingSizeHalf, y_point_full + self.setting.processingSizeHalf):
+            for y in range(y_point_full - self.setting.processingSizeHalf,
+                           y_point_full + self.setting.processingSizeHalf):
                 next_array_sum = arr_sum_full[
                     x - x_point_full + self.setting.processingSizeHalf, y - y_point_full + self.setting.processingSizeHalf]
                 if next_array_sum > max_array_sum:
@@ -178,12 +170,27 @@ class ImageOperations:
         """
         # Отображение градиента нахождения точки
         max_int = _arr_sum_full.max()
-        for x in range(_x_point_full - self.setting.processingSizeHalf, _x_point_full + self.setting.processingSizeHalf):
-            for y in range(_y_point_full - self.setting.processingSizeHalf, _y_point_full + self.setting.processingSizeHalf):
+        for x in range(_x_point_full - self.setting.processingSizeHalf,
+                       _x_point_full + self.setting.processingSizeHalf):
+            for y in range(_y_point_full - self.setting.processingSizeHalf,
+                           _y_point_full + self.setting.processingSizeHalf):
                 color = int(((_arr_sum_full[
                     x - _x_point_full + self.setting.processingSizeHalf, y - _y_point_full + self.setting.processingSizeHalf]) / max_int) * 255)
                 _img_full.putpixel((x, y), color)
         _img_full.show()
 
-    def find_cephalometric_parameters(self):
-        return 1
+    def find_cephalometric_params(self):
+        # Расчет линий
+        self.lines.calculate(self.points)
+
+        # Расчет параметров
+        self.params.calculate(self.points, self.lines)
+
+    def print_cephalometric_params(self):
+
+        for line in self.lines.all:
+            print(line.name, line.X, line.Y)
+
+        for param in self.params.all:
+            if param.isFound:
+                print(param.name, param.value, param.isNormal)
