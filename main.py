@@ -4,7 +4,7 @@ from normalization import Normalization
 from image_operations import ImageOperations
 
 if __name__ == '__main__':
-    image = Image.open("img/2prepare.jpg")
+    image = Image.open("img/1prepare2.jpg")
     norm = Normalization(image)
     norm.normalize()
     imageOper = ImageOperations(norm.imgNormalize, config_read.Settings())
