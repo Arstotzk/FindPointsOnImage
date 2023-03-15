@@ -13,6 +13,7 @@ class Settings:
         self.multipleResize = config["multipleResize"]
         self.processingSize = config["processingSize"]
         self.processingSizeHalf = int(config["processingSize"] / 2)
+        self.skullNormalizationSize = config["skullNormalizationSize"]
 
         self.colorR = config["colorR"]
         self.colorG = config["colorG"]

@@ -5,9 +5,10 @@ import thread_calc
 from point import Points
 from vector import Lines
 from cephalometric_params import Params
+import normalization
+from normalization import Normalization
 
 np.set_printoptions(threshold=np.inf)
-
 
 class ImageOperations:
 
@@ -22,7 +23,7 @@ class ImageOperations:
         self.endTime = None
         self.difTime = None
         self.image = _image
-        self.resizedImage = self.resize_img(self.image, self.setting.multipleResize)
+        self.resizedImage = normalization.resize_img(self.image, self.setting.multipleResize)
         self.width, self.height = self.image.size
         self.arrSumFull = np.full((self.width, self.height), 0)
         # Точки
@@ -62,19 +63,6 @@ class ImageOperations:
         self.points.PNS.set_point_on_image(self.image)
         self.points.Po.set_point_on_image(self.image)
         self.points.S.set_point_on_image(self.image)
-
-    def resize_img(self, _img, multiple):
-        """
-        Уменьшение изображение.
-        :param _img: Исходное изображение.
-        :param multiple: Коэффициент уменьшения.
-        :return:
-        """
-        width, height = _img.size
-        new_width = int(width / multiple)
-        new_height = int(height / multiple)
-        _img = _img.resize((new_width, new_height), Image.ANTIALIAS)
-        return _img
 
     def find_points_by_template(self):
         """
@@ -117,7 +105,7 @@ class ImageOperations:
         resized_img = resized_img.convert('L')
         template = _template_full
         template = template.convert('L')
-        template = self.resize_img(template, self.setting.multipleResize)
+        template = normalization.resize_img(template, self.setting.multipleResize)
         width, height = resized_img.size
         width_template, height_template = template.size
         half_size_template = int(width_template / 2)

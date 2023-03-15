@@ -1,10 +1,13 @@
 from PIL import Image
 import config_read
+from normalization import Normalization
 from image_operations import ImageOperations
 
 if __name__ == '__main__':
-    image = Image.open("img/1prepare2.jpg")
-    imageOper = ImageOperations(image, config_read.Settings())
+    image = Image.open("img/2prepare.jpg")
+    norm = Normalization(image)
+    norm.normalize()
+    imageOper = ImageOperations(norm.imgNormalize, config_read.Settings())
     imageOper.find_points_by_template()
     imageOper.find_cephalometric_params()
     imageOper.print_cephalometric_params()
