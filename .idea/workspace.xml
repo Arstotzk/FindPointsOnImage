@@ -10,8 +10,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="Python Unit Test" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -36,27 +36,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.main">
-    <configuration name="MainMini (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="findPointsOnImage" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/MainMini.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="MainMini" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="findPointsOnImage" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -141,6 +120,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="test_image_operations" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="findPointsOnImage" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/test_image_operations.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="Unittests in test_normalization.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="findPointsOnImage" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -174,18 +174,18 @@
     <list>
       <item itemvalue="Python.main" />
       <item itemvalue="Python.MainMini" />
-      <item itemvalue="Python.MainMini (1)" />
       <item itemvalue="Python.config_read" />
+      <item itemvalue="Python.test_image_operations" />
       <item itemvalue="Python tests.Unittests in test_vector.py" />
       <item itemvalue="Python tests.Unittests in test_normalization.py" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.test_image_operations" />
         <item itemvalue="Python tests.Unittests in test_normalization.py" />
         <item itemvalue="Python.main" />
         <item itemvalue="Python tests.Unittests in test_vector.py" />
         <item itemvalue="Python.MainMini" />
-        <item itemvalue="Python.config_read" />
       </list>
     </recent_temporary>
   </component>

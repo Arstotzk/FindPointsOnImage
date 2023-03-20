@@ -20,6 +20,19 @@ class Settings:
         self.colorB = config["colorB"]
         self.shift = config["shift"]
 
+        self.rabbitLogin = config["rabbitLogin"]
+        self.rabbitPassword = config["rabbitPassword"]
+        self.rabbitHost = config["rabbitHost"]
+        self.rabbitPort = config["rabbitPort"]
+        self.rabbitVirtualHost = config["rabbitVirtualHost"]
+
+        self.dbName = config["dbName"]
+        self.dbUser = config["dbUser"]
+        self.dbPassword = config["dbPassword"]
+        self.dbHost = config["dbHost"]
+        self.dbPort = config["dbPort"]
+
+
     def read_yaml(self, _file_path):
         """
         Получить параметры из config.yaml.

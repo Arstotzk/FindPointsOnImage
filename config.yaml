@@ -1,3 +1,4 @@
+#Настройки нахождения точек
 threadsCPU: 16 #кол-во потоков на ЦП
 threadNums: 8 #кол-во задейсвованных потоков в обработке
 multipleResize: 4 #коэффициент сжатия размера изображения
@@ -9,3 +10,17 @@ colorR: 0 #Красный канал
 colorG: 255 #Зеленый канал
 colorB: 0 #Синий канал
 shift: 5 #Сдвиг текста от точки
+
+#rabbitMQ
+rabbitLogin: "service"
+rabbitPassword: "service"
+rabbitHost: "localhost"
+rabbitPort: 5672
+rabbitVirtualHost: "main"
+
+#database
+dbName: "health_control"
+dbUser: "postgres"
+dbPassword: "postgres"
+dbHost: "localhost"
+dbPort: 5432
