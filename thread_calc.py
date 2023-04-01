@@ -57,7 +57,7 @@ def culc_sum_thread(_x, _y, _img, _template, _size, _thread, _blocks, _processin
         arr_sum.arrays.append(culc_sum_block(_x, _y, _img, _template, _size, block, _processing_size))
         arr_sum.blocks.append(block)
 
-    print("Поток " + str(_thread) + " завершен")
+    #print("Поток " + str(_thread) + " завершен")
     return arr_sum
 
 
@@ -78,7 +78,7 @@ def culc_sum_block(_x, _y, _img, _template, _size, _block, _processing_size):
     for x in range(_xStart, _xStart + 2):
         for y in range(0, _processing_size):
             arr_sum[x - _xStart, y] = calc_sum(_x + x, _y + y, _img, _template, _size)
-    print("Расчет блока " + str(_block) + " завершен")
+    #print("Расчет блока " + str(_block) + " завершен")
     return arr_sum
 
 
@@ -114,6 +114,7 @@ def start(_x_point_th, _y_point_th, _img_full, _template_full, _thread_nums, _pr
     :param _processing_size: Размер области обработки.
     :return: Массив с вероятностным нахождением точки по пикселям области.
     """
+
     executor = ProcessPoolExecutor(_thread_nums)
     params = [[], [], [], [], [], [], [], []]
     for threadNum in range(0, _thread_nums):

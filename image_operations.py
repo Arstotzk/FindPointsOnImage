@@ -1,12 +1,13 @@
 import numpy as np
-from PIL import Image
 import time
 import thread_calc
 from point import Points
 from vector import Lines
 from cephalometric_params import Params
 import normalization
-from normalization import Normalization
+from db_connect import DBConnect
+from uuid import uuid4
+
 
 np.set_printoptions(threshold=np.inf)
 
@@ -122,18 +123,18 @@ class ImageOperations:
                     y_point = y
             # print("Ready resize: " + str(((x - half_size_template + 1) / (width - width_template)) * 100) + "%")
 
-        print(x_point, y_point)
+        #print(x_point, y_point)
 
         x_point_full = x_point * self.setting.multipleResize
         y_point_full = y_point * self.setting.multipleResize
-        print(x_point_full, y_point_full)
+        #print(x_point_full, y_point_full)
 
         x_point_th = x_point_full - self.setting.processingSizeHalf
         y_point_th = y_point_full - self.setting.processingSizeHalf
 
         arr_sum_full = thread_calc.start(x_point_th, y_point_th, _img_full, _template_full, self.setting.threadNums,
                                          self.setting.processingSize)
-        print("Потоки завершены")
+        #print("Потоки завершены")
 
         max_array_sum = 0
         for x in range(x_point_full - self.setting.processingSizeHalf, x_point_full + self.setting.processingSizeHalf):
@@ -182,3 +183,33 @@ class ImageOperations:
         for param in self.params.all:
             if param.isFound:
                 print(param.name, param.value, param.isNormal)
+
+    def put_cephalometric_point_and_params(self, image_guid):
+        connect = DBConnect()
+
+        for point in self.points.all:
+            point_uuid = uuid4()
+            result = connect.ExecuteInsertQuery('INSERT INTO public.points("Guid", image, x, y, point_type)'
+                                                'VALUES (\'' + point_uuid.__str__() + '\', \'' + image_guid + '\','
+                                                ' ' + str(point.X) + ', ' + str(point.Y) + ', \'' + point.typeGuid + '\')'
+                                                'RETURNING \'Новая запись добавлена.\';')
+            point.guid = point_uuid
+
+        for line in self.lines.all:
+            line_uuid = uuid4()
+            result = connect.ExecuteInsertQuery('INSERT INTO public.lines("Guid", image, x, y, line_type, start_point, end_point)'
+                                                'VALUES (\'' + line_uuid.__str__() + '\', \'' + image_guid + '\','
+                                                ' ' + str(line.X) + ', ' + str(line.Y) + ', \'' + line.typeGuid + '\','
+                                                ' \'' + line.pointStart.guid.__str__() + '\', \'' + line.pointEnd.guid.__str__() + '\')'
+                                                'RETURNING \'Новая запись добавлена.\';')
+            line.guid = line_uuid
+
+        for param in self.params.all:
+            param_uuid = uuid4()
+            result = connect.ExecuteInsertQuery('INSERT INTO public.params("Guid", image, param_type, value)'
+                                                'VALUES (\'' + param_uuid.__str__() + '\', \'' + image_guid + '\','
+                                                ' \'' + param.typeGuid + '\', ' + str(param.value) + ')'
+                                                'RETURNING \'Новая запись добавлена.\';')
+            param.guid = param_uuid
+
+

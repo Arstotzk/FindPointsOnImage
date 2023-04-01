@@ -24,3 +24,6 @@ dbUser: "postgres"
 dbPassword: "postgres"
 dbHost: "localhost"
 dbPort: 5432
+
+#storage
+filePath: "C:\\health_storage"

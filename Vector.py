@@ -5,13 +5,15 @@ import numpy as np
 
 class Vec2:
 
-    def __init__(self, _name):
+    def __init__(self, _name, _guid: str = None):
         self.pointStart = None
         self.pointEnd = None
         self.X = None
         self.Y = None
         self.array = [None, None]
         self.name = _name
+        self.typeGuid = _guid
+        self.guid = None
 
     def set_vector(self, _point_start, _point_end):
         self.pointStart = _point_start
@@ -45,14 +47,14 @@ class Vec2:
 class Lines:
 
     def __init__(self):
-        self.FH = Vec2("FH")
-        self.NA = Vec2("NA")
-        self.NB = Vec2("NB")
-        self.SN = Vec2("SN")
-        self.A1AR = Vec2("A1AR")
-        self.NPg = Vec2("NPg")
-        self.MP = Vec2("MP")
-        self.B1BR = Vec2("B1BR")
+        self.FH = Vec2("FH", "25c52bab-255d-46e1-ae1a-93ddbe42e94b")
+        self.NA = Vec2("NA", "4f8b2f54-3cc2-4c77-87b5-01a5bb83d724")
+        self.NB = Vec2("NB", "5e0d5112-30b7-4fe0-890c-9dbce8b8e59c")
+        self.SN = Vec2("SN", "fad0a0a5-7385-4581-82dd-50f5ec5c53e0")
+        self.A1AR = Vec2("A1AR", "3ac95839-2771-42be-a150-396488c60d45")
+        self.NPg = Vec2("NPg", "8b1617b7-90f0-4c21-8102-0bede233a471")
+        self.MP = Vec2("MP", "23ebcf69-d534-4037-81fe-3fdc0d83e273")
+        self.B1BR = Vec2("B1BR", "80eafee5-c5d0-4c69-8e79-3ff8e217a496")
 
         self.all = [self.FH, self.NA, self.NB, self.SN, self.A1AR, self.NPg, self.MP, self.B1BR]
 
