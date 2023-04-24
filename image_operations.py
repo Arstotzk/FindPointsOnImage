@@ -189,7 +189,7 @@ class ImageOperations:
 
         for point in self.points.all:
             point_uuid = uuid4()
-            result = connect.ExecuteInsertQuery('INSERT INTO public.points("Guid", image, x, y, point_type)'
+            result = connect.ExecuteChangeQuery('INSERT INTO public.points("Guid", image, x, y, point_type)'
                                                 'VALUES (\'' + point_uuid.__str__() + '\', \'' + image_guid + '\','
                                                 ' ' + str(point.X) + ', ' + str(point.Y) + ', \'' + point.typeGuid + '\')'
                                                 'RETURNING \'Новая запись добавлена.\';')
@@ -197,7 +197,7 @@ class ImageOperations:
 
         for line in self.lines.all:
             line_uuid = uuid4()
-            result = connect.ExecuteInsertQuery('INSERT INTO public.lines("Guid", image, x, y, line_type, start_point, end_point)'
+            result = connect.ExecuteChangeQuery('INSERT INTO public.lines("Guid", image, x, y, line_type, start_point, end_point)'
                                                 'VALUES (\'' + line_uuid.__str__() + '\', \'' + image_guid + '\','
                                                 ' ' + str(line.X) + ', ' + str(line.Y) + ', \'' + line.typeGuid + '\','
                                                 ' \'' + line.pointStart.guid.__str__() + '\', \'' + line.pointEnd.guid.__str__() + '\')'
@@ -206,10 +206,10 @@ class ImageOperations:
 
         for param in self.params.all:
             param_uuid = uuid4()
-            result = connect.ExecuteInsertQuery('INSERT INTO public.params("Guid", image, param_type, value)'
+            result = connect.ExecuteChangeQuery('INSERT INTO public.params("Guid", image, param_type, value)'
                                                 'VALUES (\'' + param_uuid.__str__() + '\', \'' + image_guid + '\','
                                                 ' \'' + param.typeGuid + '\', ' + str(param.value) + ')'
                                                 'RETURNING \'Новая запись добавлена.\';')
             param.guid = param_uuid
 
-
+        result = connect.ExecuteChangeQuery('UPDATE public.images SET status= \'complete\' WHERE "Guid" = \'' + image_guid + '\' RETURNING \'Запись обновлена.\';')
