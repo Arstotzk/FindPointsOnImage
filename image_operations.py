@@ -213,3 +213,49 @@ class ImageOperations:
             param.guid = param_uuid
 
         result = connect.ExecuteChangeQuery('UPDATE public.images SET status= \'complete\' WHERE "Guid" = \'' + image_guid + '\' RETURNING \'Запись обновлена.\';')
+
+    def update_cephalometric_point_and_params(self, image_guid):
+        connect = DBConnect()
+
+        for line in self.lines.all:
+            result = connect.ExecuteChangeQuery('UPDATE public.lines '
+                                                'SET x = ' + str(line.X) + ', y=' + str(line.Y) + ' '
+                                                'WHERE "Guid"= \'' + line.guid +'\''
+                                                'RETURNING \'Запись обновлена.\';')
+
+        for param in self.params.all:
+            result = connect.ExecuteChangeQuery('UPDATE public.params '
+                                                'SET value = ' + str(param.value) + ' '
+                                                'WHERE "Guid"= \'' + param.guid +'\''
+                                                'RETURNING \'Запись обновлена.\';')
+
+        result = connect.ExecuteChangeQuery('UPDATE public.images SET status= \'complete\' WHERE "Guid" = \'' + image_guid + '\' RETURNING \'Запись обновлена.\';')
+
+
+    def get_cephalometric_points(self, image_guid):
+        connect = DBConnect()
+
+        result = connect.ExecuteQuery('SELECT x, y, point_type, "Guid" FROM public.points where image = \'' + image_guid + '\';')
+
+        for pointData in result:
+            point = self.points.GetPointByTypeGuid(pointData[2])
+            point.set_xy(pointData[0], pointData[1])
+            point.guid = pointData[3]
+
+    def get_cephalometric_lines(self, image_guid):
+        connect = DBConnect()
+
+        result = connect.ExecuteQuery('SELECT "Guid", line_type FROM public.lines where image = \'' + image_guid + '\';')
+
+        for lineData in result:
+            line = self.lines.GetLineByTypeGuid(lineData[1])
+            line.guid = lineData[0]
+
+    def get_cephalometric_params(self, image_guid):
+        connect = DBConnect()
+
+        result = connect.ExecuteQuery('SELECT "Guid", param_type FROM public.params where image = \'' + image_guid + '\';')
+
+        for paramData in result:
+            param = self.params.GetParamByTypeGuid(paramData[1])
+            param.guid = paramData[0]

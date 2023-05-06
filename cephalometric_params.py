@@ -51,3 +51,7 @@ class Params:
         # TODO: Fx
         self.FMA.set_param(21, 31, _lines.FH.angle_between_degrees(_lines.MP))
 
+    def GetParamByTypeGuid(self, _typeGuid):
+        for param in self.all:
+            if param.typeGuid == _typeGuid:
+                return param

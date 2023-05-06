@@ -67,3 +67,8 @@ class Lines:
         self.NPg.set_vector(_points.N, _points.Pg)
         self.MP.set_vector(_points.Me, _points.Go)
         self.B1BR.set_vector(_points.B1, _points.BR)
+
+    def GetLineByTypeGuid(self, _typeGuid):
+        for line in self.all:
+            if line.typeGuid == _typeGuid:
+                return line

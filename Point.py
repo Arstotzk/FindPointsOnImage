@@ -108,3 +108,8 @@ class Points(object):
 
         self.all = [self.A, self.A1, self.ANS, self.AR, self.B, self.B1, self.BR, self.DT, self.En, self.Go, self.Me,
                     self.Mn, self.N, self.Or, self.PAC, self.Pg, self.PNS, self.Po, self.S]
+
+    def GetPointByTypeGuid(self, _typeGuid):
+        for point in self.all:
+            if point.typeGuid == _typeGuid:
+                return point
