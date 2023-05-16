@@ -22,7 +22,7 @@ def calc_sum(_x, _y, _img, _template, _size):
     """
     sum = 0
     xs = -1
-    width, height = _img.size
+    width, height = _img.shape
     for x in range(_x - _size, _x + _size):
         xs += 1
         ys = -1
@@ -30,8 +30,8 @@ def calc_sum(_x, _y, _img, _template, _size):
             ys += 1
             if width <= x or height <= y:
                 continue
-            r = _img.getpixel((x, y))
-            rs = _template.getpixel((xs, ys))
+            r = _img[x, y]
+            rs = _template[xs, ys]
             if r == rs:
                 sum += 1
             else:
@@ -116,12 +116,14 @@ def start(_x_point_th, _y_point_th, _img_full, _template_full, _thread_nums, _pr
     """
 
     executor = ProcessPoolExecutor(_thread_nums)
+    img_array = np.rot90(np.flipud(np.asarray(_img_full, dtype='int64')), 3)
+    template_array = np.rot90(np.flipud(np.asarray(_template_full, dtype='int64')), 3)
     params = [[], [], [], [], [], [], [], []]
     for threadNum in range(0, _thread_nums):
         params[0].append(_x_point_th)
         params[1].append(_y_point_th)
-        params[2].append(_img_full)
-        params[3].append(_template_full)
+        params[2].append(img_array)
+        params[3].append(template_array)
         params[4].append(int(_template_full.size[0] / 2))
         params[5].append(threadNum)
         params[6].append(get_blocks_by_threads(threadNum, _thread_nums, _processing_size))

@@ -35,7 +35,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../NumNeiro" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../interectionService" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -43,7 +43,7 @@
       <recent name="C:\Users\idens\PycharmProjects\findPointsOnImage" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.test_image_operations">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="findPointsOnImage" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -177,17 +177,17 @@
       <item itemvalue="Python.main" />
       <item itemvalue="Python.test_image_operations" />
       <item itemvalue="Python.test_rabbit" />
+      <item itemvalue="Python tests.Unittests in test_get_points.py" />
       <item itemvalue="Python tests.Unittests in test_normalization.py" />
       <item itemvalue="Python tests.Unittests in test_vector.py" />
-      <item itemvalue="Python tests.Unittests in test_get_points.py" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.test_image_operations" />
+        <item itemvalue="Python tests.Unittests in test_vector.py" />
         <item itemvalue="Python tests.Unittests in test_get_points.py" />
         <item itemvalue="Python.test_rabbit" />
-        <item itemvalue="Python.test_image_operations" />
         <item itemvalue="Python tests.Unittests in test_normalization.py" />
-        <item itemvalue="Python.main" />
       </list>
     </recent_temporary>
   </component>
@@ -229,12 +229,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/image_operations.py</url>
-          <line>134</line>
+          <line>137</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/thread_calc.py</url>
-          <line>129</line>
+          <line>131</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -249,18 +249,28 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/image_operations.py</url>
-          <line>219</line>
+          <line>222</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/image_operations.py</url>
-          <line>231</line>
+          <line>234</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/image_operations.py</url>
-          <line>225</line>
+          <line>228</line>
           <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/thread_calc.py</url>
+          <line>32</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/thread_calc.py</url>
+          <line>24</line>
+          <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

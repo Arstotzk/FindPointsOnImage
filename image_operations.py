@@ -112,10 +112,13 @@ class ImageOperations:
         half_size_template = int(width_template / 2)
         array_sum = np.full((width, height), 0)
 
+        img_array = np.rot90(np.flipud(np.asarray(resized_img, dtype='int64')), 3)
+        template_array = np.rot90(np.flipud(np.asarray(template, dtype='int64')), 3)
+
         sum_old = 0
         for x in range(half_size_template, width - (half_size_template)):
             for y in range(half_size_template, height - (half_size_template)):
-                sum = thread_calc.calc_sum(x, y, resized_img, template, half_size_template)
+                sum = thread_calc.calc_sum(x, y, img_array, template_array, half_size_template)
                 array_sum[x, y] = sum
                 if (sum > sum_old):
                     sum_old = sum
